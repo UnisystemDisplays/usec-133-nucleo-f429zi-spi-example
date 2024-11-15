@@ -122,121 +122,93 @@ int main(void)
     }
   printf ("[status] screen temperature: %d [degC]\n\r", usec_temp);
 
-  /* cleanup display - UPDATE_MODE_INIT */
-  status = usec_img_update (ctx, 0, 0, 1600, 1200, UPDATE_MODE_INIT, 1);
-  if (status != USEC_DEV_OK)
-    {
-      printf ("[error] cannot cleanup display\n\r");
-      while(1);
-    }
-
-  /* upload 8BPP image into internal buffer */
-  status = usec_img_upload (ctx, (uint8_t*)img_8bpp, sizeof (img_8bpp),
-                            IMG_8BPP, 400, 300, 800, 600);
-  if (status != USEC_DEV_OK)
-    {
-      printf ("[error] cannot upload 'img_8bpp' data\n\r");
-      while(1);
-    }
-
-  /* update display - UPDATE_MODE_GC16 */
-  status = usec_img_update (ctx, 400, 300, 800, 600, UPDATE_MODE_GC16, 1);
-  if (status != USEC_DEV_OK)
-    {
-      printf ("[error] cannot update display\n\r");
-      while(1);
-    }
-
   /*
-   * DELAY ONLY FOR DEMO PURPOSES
+   * DEMO MAINLOOP
    */
-  HAL_Delay (2000);
-
-  /* IMPORTANT! - switch to 1BPP mode before update */
-  status = usec_1bpp_mode (ctx, ENABLE_1BPP);
-  if (status != USEC_DEV_OK)
+  while(1)
     {
-      printf ("[error] cannot switch display to 1BPP mode\n\r");
-      while(1);
+
+	  /* cleanup display - UPDATE_MODE_INIT */
+	  status = usec_img_update (ctx, 0, 0, 1600, 1200, UPDATE_MODE_INIT, 1);
+	  if (status != USEC_DEV_OK)
+		{
+		  printf ("[error] cannot cleanup display\n\r");
+		  while(1);
+		}
+
+	  /* upload 8BPP image into internal buffer */
+	  status = usec_img_upload (ctx, (uint8_t*)img_8bpp, sizeof (img_8bpp),
+								IMG_8BPP, 400, 300, 800, 600);
+	  if (status != USEC_DEV_OK)
+		{
+		  printf ("[error] cannot upload 'img_8bpp' data\n\r");
+		  while(1);
+		}
+
+	  /* update display - UPDATE_MODE_GC16 */
+	  status = usec_img_update (ctx, 400, 300, 800, 600, UPDATE_MODE_GC16, 1);
+	  if (status != USEC_DEV_OK)
+		{
+		  printf ("[error] cannot update display\n\r");
+		  while(1);
+		}
+
+	  /* delay only for demo purposes */
+	  HAL_Delay (2000);
+
+	  /* switch to 1BPP mode */
+	  status = usec_1bpp_mode (ctx, ENABLE_1BPP);
+	  if (status != USEC_DEV_OK)
+		{
+		  printf ("[error] cannot switch display to 1BPP mode\n\r");
+		  while(1);
+		}
+
+	  /* upload 1BPP image to internal buffer */
+	  status = usec_img_upload (ctx, (uint8_t*)img_1_1bpp, sizeof(img_1_1bpp),
+								IMG_1BPP, 0, 0, 1600, 1200);
+	  if (status != USEC_DEV_OK)
+		{
+		  printf ("[error] cannot upload 'img_1_1bpp' data\n\r");
+		  while(1);
+		}
+
+	  /* update display */
+	  status = usec_img_update (ctx, 0, 0, 1600, 1200, UPDATE_MODE_GC16, 1);
+	  if (status != USEC_DEV_OK)
+		{
+		  printf ("[error] cannot update display\n\r");
+		  while(1);
+		}
+
+	  /* delay only for demo purposes */
+	  HAL_Delay (2000);
+
+	  /* upload 1BPP image to internal buffer */
+	  status = usec_img_upload (ctx, (uint8_t*)img_2_1bpp,
+								sizeof(img_2_1bpp), IMG_1BPP, 0, 0, 1600, 1200);
+	  if (status != USEC_DEV_OK)
+		{
+		  printf ("[error] cannot upload 'img_2_1bpp' data\n\r");
+		  while(1);
+		}
+
+	  /* update display */
+	  status = usec_img_update (ctx, 0, 0, 1600, 1200, UPDATE_MODE_GC16, 1);
+	  if (status != USEC_DEV_OK)
+		{
+		  printf ("[error] cannot update display\n\r");
+		  while(1);
+		}
+
+	  /* disable 1BPP mode if we want to display 8BPP image */
+	  status = usec_1bpp_mode (ctx, DISABLE_1BPP);
+	  if (status != USEC_DEV_OK)
+		{
+		  printf ("[error] cannot disable 1BPP mode\n\r");
+		  while(1);
+		}
     }
-
-  /* upload 1BPP image to internal buffer */
-  status = usec_img_upload (ctx, (uint8_t*)img_1_1bpp, sizeof(img_1_1bpp),
-                            IMG_1BPP, 0, 0, 1600, 1200);
-  if (status != USEC_DEV_OK)
-    {
-      printf ("[error] cannot upload 'img_1_1bpp' data\n\r");
-      while(1);
-    }
-
-  /* update display */
-  status = usec_img_update (ctx, 0, 0, 1600, 1200, UPDATE_MODE_GC16, 1);
-  if (status != USEC_DEV_OK)
-    {
-      printf ("[error] cannot update display\n\r");
-      while(1);
-    }
-
-  /*
-   * DELAY ONLY FOR DEMO PURPOSES
-   */
-  HAL_Delay (2000);
-
-  /* upload 1BPP image to internal buffer */
-  status = usec_img_upload (ctx, (uint8_t*)img_2_1bpp,
-                            sizeof(img_2_1bpp), IMG_1BPP, 0, 0, 1600, 1200);
-  if (status != USEC_DEV_OK)
-    {
-      printf ("[error] cannot upload 'img_2_1bpp' data\n\r");
-      while(1);
-    }
-
-  /* update display */
-  status = usec_img_update (ctx, 0, 0, 1600, 1200, UPDATE_MODE_GC16, 1);
-  if (status != USEC_DEV_OK)
-    {
-      printf ("[error] cannot update display\n\r");
-      while(1);
-    }
-
-  /*
-   * DELAY ONLY FOR DEMO PURPOSES
-   */
-  HAL_Delay (2000);
-
-  /* IMPORTANT! - disable 1BPP mode if we want to display 8BPP image */
-  status = usec_1bpp_mode (ctx, DISABLE_1BPP);
-  if (status != USEC_DEV_OK)
-    {
-      printf ("[error] cannot disable 1BPP mode\n\r");
-      while(1);
-    }
-
-  /* cleanup display - UPDATE_MODE_INIT */
-  status = usec_img_update (ctx, 0, 0, 1600, 1200, UPDATE_MODE_INIT, 1);
-  if (status != USEC_DEV_OK)
-    {
-      printf ("[error] cannot cleanup display\n\r");
-      while(1);
-    }
-
-  /* once again upload 8BPP image into internal buffer */
-  status = usec_img_upload (ctx, (uint8_t*)img_8bpp, sizeof(img_8bpp),
-                            IMG_8BPP, 400, 300, 800, 600);
-  if (status != USEC_DEV_OK)
-    {
-      printf ("[error] cannot upload 'img_8bpp' data\n\r");
-      while(1);
-    }
-
-  /* update display - UPDATE_MODE_GC16 */
-  status = usec_img_update (ctx, 400, 300, 800, 600, UPDATE_MODE_GC16, 1);
-  if (status != USEC_DEV_OK)
-    {
-      printf ("[error] cannot update display\n\r");
-      while(1);
-    }
-
   /* USER CODE END 2 */
 
   /* Infinite loop */

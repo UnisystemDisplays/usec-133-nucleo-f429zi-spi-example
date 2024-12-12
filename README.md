@@ -25,11 +25,11 @@ CONNECTIONS
 COMPILATION
 -----------
 
-[1] Clone *usec-133-esp32-spi-example* repository:
+[1] Clone *usec-133-nucleo-f429zi-spi-example* repository:
 
 `git clone https://github.com/UnisystemDisplays/usec-133-nucleo-f429zi-spi-example.git-`
 
-[3] Start *STM32CubeIDE* and import *usec-133-esp32-spi-example* project by choosing:
+[3] Start *STM32CubeIDE* and import *usec-133-nucleo-f429zi-spi-example* project by choosing:
 
 `File -> Open Projects from File Systems`
 
